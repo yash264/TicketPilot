@@ -3,14 +3,16 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { getTickets, updateTicketStatus } from "../externalAPI/ticketAPI";
 
-const TicketTable = ({ search }) => {
+const TicketTable = ({ search, category }) => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchTickets = async () => {
     setLoading(true);
     const res = await getTickets();
-    setTickets(Array.isArray(res.data.value) ? res.data.value : []);
+    setTickets(
+      Array.isArray(res.data.value) ? res.data.value : []
+    );
     setLoading(false);
   };
 
@@ -18,11 +20,16 @@ const TicketTable = ({ search }) => {
     fetchTickets();
   }, []);
 
-  const filtered = tickets.filter(
-    (t) =>
+  const filtered = tickets.filter((t) => {
+    const matchesSearch =
       t.title?.toLowerCase().includes(search.toLowerCase()) ||
-      t.description?.toLowerCase().includes(search.toLowerCase())
-  );
+      t.description?.toLowerCase().includes(search.toLowerCase());
+
+    const matchesCategory =
+      category === "All" || t.category === category;
+
+    return matchesSearch && matchesCategory;
+  });
 
   const columns = [
     {
@@ -35,24 +42,17 @@ const TicketTable = ({ search }) => {
       title: "Title",
       dataIndex: "title",
       width: 180,
-      ellipsis: true
+      // ellipsis: true
     },
-    {
-      title: "Description",
-      dataIndex: "description",
-      width: 260,
-      render: (text) => (
-        <Tooltip title={text}>
-          <span>{text}</span>
-        </Tooltip>
-      )
-    },
+
+    /* ✅ Category – single clean color */
     {
       title: "Category",
       dataIndex: "category",
-      width: 120,
+      width: 130,
       render: (v) => <Tag color="blue">{v}</Tag>
     },
+
     {
       title: "Priority",
       dataIndex: "priority",
@@ -63,8 +63,8 @@ const TicketTable = ({ search }) => {
             v === "High"
               ? "red"
               : v === "Medium"
-              ? "orange"
-              : "green"
+                ? "orange"
+                : "green"
           }
         >
           {v}
@@ -85,23 +85,50 @@ const TicketTable = ({ search }) => {
           .utcOffset("+05:30")
           .format("DD MMM YYYY, hh:mm A")
     },
+
+    {
+      title: "Description",
+      dataIndex: "description",
+      width: 260,
+      render: (text) => (
+        <Tooltip title={text}>
+          <span>{text}</span>
+        </Tooltip>
+      )
+    },
+
+    /* ✅ Status – colored */
     {
       title: "Status",
       fixed: "right",
-      width: 140,
-      render: (_, record) => (
-        <Select
-          value={record.status}
-          style={{ width: 120 }}
-          onChange={(value) =>
-            updateTicketStatus(record._id, value).then(fetchTickets)
-          }
-          options={[
-            { value: "Open", label: "Open" },
-            { value: "Closed", label: "Closed" }
-          ]}
-        />
-      )
+      width: 150,
+      render: (_, record) => {
+        const isOpen = record.status === "Open";
+
+        return (
+          <Select
+            value={record.status}
+            style={{
+              width: 120,
+              backgroundColor: isOpen ? "#4ade80" : "#fb7185",
+              borderRadius: 6,
+            }}
+            onChange={(value) =>
+              updateTicketStatus(record._id, value).then(fetchTickets)
+            }
+            options={[
+              {
+                value: "Open",
+                label: <span className="text-green-900 font-medium">Open</span>,
+              },
+              {
+                value: "Closed",
+                label: <span className="text-rose-900 font-medium">Closed</span>,
+              },
+            ]}
+          />
+        );
+      },
     }
   ];
 
@@ -112,11 +139,12 @@ const TicketTable = ({ search }) => {
       dataSource={filtered}
       loading={loading}
       bordered
-      pagination={{ pageSize: 6 }}
+      pagination={{ pageSize: 5 }}
       scroll={{ x: 1300 }}
     />
   );
 };
 
 export default TicketTable;
+
 
