@@ -21,7 +21,7 @@ Gain real-time insights into support operations with an analytics dashboard that
 
 ## Demo Video & Live Hosting
 
-- **🎥 Video Demo:** https://drive.google.com/file/d/1eVuNXHqkMUugiK0iO3mnkT5A_EU6FOsU/view?usp=sharing  
+- **🎥 Video Demo:** https://drive.google.com/file/d/1yCfhNMDV-BKEmya5MkwIP2u5AvfJw76p/view?usp=sharing  
 - **🌐 Live App:** https://ticketpilot-meta.vercel.app
 
 ---
@@ -35,7 +35,7 @@ Gain real-time insights into support operations with an analytics dashboard that
 | POST | `/api/createTicket` | Create a new support ticket (AI classification applied) |
 | GET | `/api/getTicket` | Fetch all tickets |
 | PUT | `/api/updateTicket/:id` | Update ticket status (Open / Closed) |
-| DELETE | `/api/metrics` | Get overall ticket metrics |
+| GET | `/api/metrics` | Get overall ticket metrics |
 
 ---
 
