@@ -2,17 +2,30 @@ import Ticket from "../models/ticketModel.js";
 import { classifyTicketWithGemini } from "../externalAPI/gemini.js";
 
 
+// Inline ticket ID generator
+const generateTicketId = () => {
+    return `TP-${Math.floor(100000 + Math.random() * 900000)}`;
+};
+
+
 // create new ticket
 export const createTicket = async (req, res) => {
     try {
         const { title, description } = req.body;
-    
+
+        if (!title || !description) {
+            return res.status(400).json({
+                message: "Title and description are required"
+            });
+        }
+
         const aiData = await classifyTicketWithGemini(
             title,
             description
         );
 
         const ticket = await Ticket.create({
+            ticketId: generateTicketId(),
             title,
             description,
             category: aiData.category,
@@ -23,8 +36,11 @@ export const createTicket = async (req, res) => {
         res.status(201).json(ticket);
     }
     catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "AI processing failed" });
+        console.error("Create ticket error:", error);
+
+        res.status(500).json({
+            message: "Failed to create ticket"
+        });
     }
 };
 
@@ -49,34 +65,3 @@ export const updateTicketStatus = async (req, res) => {
     res.json(ticket);
 };
 
-
-// show all metrics
-export const getMetrics = async (req, res) => {
-    const total = await Ticket.countDocuments();
-
-    const byCategory = await Ticket.aggregate([
-        {
-            $group:
-            {
-                _id: "$category",
-                count: {
-                    $sum: 1
-                }
-            }
-        }
-    ]);
-
-    const byPriority = await Ticket.aggregate([
-        {
-            $group:
-            {
-                _id: "$priority",
-                count: {
-                    $sum: 1
-                }
-            }
-        }
-    ]);
-
-    res.json({ total, byCategory, byPriority });
-};

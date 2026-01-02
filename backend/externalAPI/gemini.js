@@ -19,7 +19,7 @@ export async function classifyTicketWithGemini(title, description) {
 
         JSON format:
         {
-          "category": "Billing | Payments | Technical Issue | Account / Login | Sales Inquiry | Feature Request | Bug Report | General Question",
+          "category": "Billing Problem | Payments | Technical Issue | Account / Login | Sales Inquiry | Feature Request | Bug Report | General Question",
           "priority": "Low | Medium | High",
           "assignedQueue": "Finance Ops | Payment Support | Engineering Support | Account Services | Sales Ops | Product Team | QA / Bug Triage | Customer Care"
         }

@@ -39,11 +39,16 @@ const DashBoard = () => {
           <div
             style={{
               height: 64,
-              color: "#fff",
-              fontSize: 18,
+              background: "linear-gradient(135deg, #fbbf24, #f97316)", // gold → orange
+              color: "#ffffff",
+              fontSize: 20,
               textAlign: "center",
               lineHeight: "64px",
-              fontWeight: "bold"
+              fontWeight: 800,
+              letterSpacing: "1px",
+              textTransform: "uppercase",
+              textShadow: "0 2px 4px rgba(0,0,0,0.35)",
+              boxShadow: "0 6px 20px rgba(249,115,22,0.45)",
             }}
           >
             Ticket Pilot

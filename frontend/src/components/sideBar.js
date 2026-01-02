@@ -36,14 +36,20 @@ const Sidebar = ({ activeTab, onChange }) => {
       {/* Bottom Branding */}
       <div
         style={{
+          height: 64,
+          background: "linear-gradient(135deg, #fbbf24, #f97316)", // gold → orange
+          color: "#ffffff",
+          fontSize: 20,
           textAlign: "center",
-          padding: 12,
-          borderTop: "1px solid #333",
-          color: "#aaa",
-          fontWeight: "bold"
+          lineHeight: "64px",
+          fontWeight: 800,
+          letterSpacing: "1px",
+          textTransform: "uppercase",
+          textShadow: "0 2px 4px rgba(0,0,0,0.35)",
+          boxShadow: "0 6px 20px rgba(249,115,22,0.45)",
         }}
       >
-        TicketPilot 🚀
+        Ticket Pilot
       </div>
     </div>
   );

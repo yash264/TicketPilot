@@ -2,9 +2,9 @@ import express from "express";
 import {
     createTicket,
     getTickets,
-    updateTicketStatus,
-    getMetrics
+    updateTicketStatus
 } from "../controllers/ticketController.js";
+import { getMetrics } from "../controllers/metricsController.js";
 
 const router = express.Router();
 

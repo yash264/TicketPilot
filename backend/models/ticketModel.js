@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const ticketSchema = new mongoose.Schema(
     {
+        ticketId: {
+            type: String,
+            unique: true,
+            required: true
+        },
         title: {
             type: String,
             required: true,
@@ -28,7 +33,7 @@ const ticketSchema = new mongoose.Schema(
             default: "Open"
         }
     },
-    { 
+    {
         timestamps: true
     }
 );
