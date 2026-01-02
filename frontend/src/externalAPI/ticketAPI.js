@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:4000/api/tickets"
+  baseURL: "https://ticketpilotserver-meta.vercel.app/api/tickets"
 });
 
 export const createTicket = (data) => API.post("/createTicket", data);

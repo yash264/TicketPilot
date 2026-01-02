@@ -7,8 +7,6 @@ import { fileURLToPath } from "url";
 import connectDB from "./connection.js";
 import ticketRoutes from "./routes/ticketRoute.js";
 
-// import orderRoutes from './routes/order.routes.js';
-// import newsRoutes from './routes/news.routes.js';
 
 const PORT = process.env.PORT
 dotenv.config();
@@ -16,7 +14,7 @@ const app = express();
 connectDB();
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'https://ticketpilot-meta.vercel.app',
   methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
   credentials: true,
 };
@@ -32,22 +30,20 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 app.use("/api/tickets", ticketRoutes);
 
-
 //  to start the server
-// app.get("/startServer", async (req, res) => {
-//   try {
-//     return res.status(200).json({
-//       success: true,
-//       message: "Server started Successfully",
-//     });
-//   }
-//   catch (error) {
-//     console.log(error);
-//   }
-// })
+app.get("/startServer", async (req, res) => {
+  try {
+    return res.status(200).json({
+      success: true,
+      message: "Server started Successfully",
+    });
+  }
+  catch (error) {
+    console.log(error);
+  }
+})
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
